@@ -1,21 +1,25 @@
-import { createServerClient } from '@supabase/ssr';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
 
-export async function middleware(req: Request) {
-  const res = NextResponse.next();
+export async function middleware(req: NextRequest) {
+  const res = NextResponse.next()
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { cookies: { get: () => null, set: () => {}, remove: () => {} } }
-  );
-  const { data: { session } } = await supabase.auth.getSession();
-  const url = new URL(req.url);
-  if (url.pathname.startsWith('/admin')) {
-    if (!session) return NextResponse.redirect(new URL('/sign-in', url.origin));
-    const email = (session as any)?.user?.email;
-    if (email !== 'devesh.pillewan@amla.io') return NextResponse.redirect(new URL('/', url.origin));
-  }
-  return res;
+    {
+      cookies: {
+        get: (key) => req.cookies.get(key)?.value,
+        set: (key, value, options) => { res.cookies.set({ name: key, value, ...options }) },
+        remove: (key, options) => { res.cookies.set({ name: key, value: '', ...options }) },
+      },
+    }
+  )
+  await supabase.auth.getUser()
+  return res
 }
 
-export const config = { matcher: ['/admin/:path*'] };
+export const config = {
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|.*\.(?:svg|png|jpg|jpeg|gif|webp)).*)',
+  ],
+}

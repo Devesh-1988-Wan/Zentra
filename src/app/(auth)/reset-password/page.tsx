@@ -1,86 +1,30 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 
 export default function ResetPasswordPage() {
   const supabase = createClient()
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [message, setMessage] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [phase, setPhase] = useState<'request' | 'update'>('request')
+  const [status, setStatus] = useState<string | null>(null)
 
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setPhase('update');
-      }
-    });
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
-  const sendEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setMessage(null);
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setStatus('Sending...')
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-    if (error) {
-      setError(error.message);
-    } else {
-      setMessage('Password reset email sent.');
-    }
-  };
-
-  const updatePwd = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setMessage(null);
-    const { error } = await supabase.auth.updateUser({ password });
-    if (error) {
-      setError(error.message);
-    } else {
-      setMessage('Password updated. You can sign in now.');
-    }
-  };
+      redirectTo: `${window.location.origin}/(auth)/update-password`,
+    })
+    setStatus(error ? error.message : 'Check your email for the reset link.')
+  }
 
   return (
-    <div className="mx-auto max-w-md p-6">
-      <h1 className="text-2xl font-semibold mb-4">Reset password</h1>
-      {phase === 'request' ? (
-        <form onSubmit={sendEmail} className="space-y-4">
-          <input
-            className="w-full border rounded p-2"
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <button className="bg-[hsl(var(--brand))] text-white rounded px-4 py-2">
-            Send reset link
-          </button>
-        </form>
-      ) : (
-        <form onSubmit={updatePwd} className="space-y-4">
-          <input
-            className="w-full border rounded p-2"
-            type="password"
-            placeholder="New password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button className="bg-[hsl(var(--brand))] text-white rounded px-4 py-2">
-            Update password
-          </button>
-        </form>
-      )}
-      {message && <p className="mt-3 text-green-600">{message}</p>}
-      {error && <p className="mt-3 text-red-600">{error}</p>}
+    <div className="auth-shell">
+      <h1>Reset password</h1>
+      <form onSubmit={onSubmit} className="stack">
+        <input type="email" placeholder="name@company.com" value={email}
+          onChange={e => setEmail(e.target.value)} required />
+        <button type="submit">Send reset link</button>
+        {status && <p className="muted">{status}</p>}
+      </form>
     </div>
-  );
+  )
 }

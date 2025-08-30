@@ -1,66 +1,27 @@
 'use client'
-import { useState } from 'react'
-import { createClient } from '@/utils/supabase/client'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { createClient } from '@/utils/supabase/client'
+import { Auth } from '@supabase/auth-ui-react'
+import { ThemeSupa } from '@supabase/auth-ui-shared'
 
 export default function SignUpPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState<string | null>(null)
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
-    setMessage(null)
-
-    const supabase = createClient()
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/confirm` },
-    })
-
-    if (error) {
-      setError(error.message)
-    } else {
-      setMessage('Check your email to confirm your account.')
-    }
-
-    setLoading(false)
-  }
+  const supabase = createClient()
+  const [loading, setLoading] = useState(true)
+  useEffect(() => { supabase.auth.getSession().then(() => setLoading(false)) }, [])
+  if (loading) return null
 
   return (
-    <div className="mx-auto max-w-md p-6">
-      <h1 className="text-2xl font-semibold mb-4">Create account</h1>
-      <form onSubmit={onSubmit} className="space-y-4">
-        <input
-          className="w-full border rounded p-2"
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          className="w-full border rounded p-2"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {error && <p className="text-red-600">{error}</p>}
-        {message && <p className="text-green-600">{message}</p>}
-        <button disabled={loading} className="bg-[hsl(var(--brand))] text-white rounded px-4 py-2">
-          {loading ? 'Creating...' : 'Sign up'}
-        </button>
-      </form>
-      <div className="mt-4 text-sm">
-        <Link href="/sign-in" className="underline">Back to sign in</Link>
-      </div>
+    <div className="auth-shell">
+      <h1>Create your account</h1>
+      <Auth
+        supabaseClient={supabase}
+        view="sign_up"
+        appearance={{ theme: ThemeSupa, variables: { default: { colors: { brand: 'var(--amla-primary)', brandAccent: '#2abf97' } } } }}
+        providers={[]}
+        redirectTo="/"
+      />
+      <p className="muted">Already have an account? <Link href="/(auth)/sign-in">Sign in</Link></p>
     </div>
   )
 }

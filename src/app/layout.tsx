@@ -1,17 +1,17 @@
-import '../styles/globals.css'
-import React from 'react'
+import './globals.css'
+import TopNav from '@/components/TopNav'
 
-export const metadata = { title: 'Zentra Dashboard', description: 'Leadership dashboards' }
+export const metadata = {
+  title: 'Zentra Admin',
+  description: 'Leadership dashboard auth pack',
+}
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        {children}
+        <TopNav />
+        <main>{children}</main>
       </body>
     </html>
   )
