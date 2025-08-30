@@ -1,28 +1,26 @@
-# Zentra Dashboard
+# Zentra — Leadership Dashboard (Starter)
 
-This repository contains the configuration and components for the AMLA-themed Zentra dashboard, including widget definitions, theme tokens, icon integration, and Supabase setup.
+This is a Next.js + Supabase starter aligned with AMLA theme and your RBAC/Widget requirements.
 
-## 🖼 Theme Setup
+## Stack
+- Next.js (App Router) + React + TypeScript
+- TailwindCSS
+- Supabase (Postgres + Auth + Storage)
 
-The AMLA theme is defined in `amla_theme_tokens.json` and includes:
-- Primary and secondary color tokens
-- Typography tokens (Poppins, Roboto, Arial)
+## Quick Start
+1. `cp .env.example .env.local` and fill:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY` (only for icon import script)
+2. Install deps: `pnpm install` (or `npm i`)
+3. Run dev: `pnpm dev`
 
-## 📊 Widget Configuration
+## Database
+- Apply SQL migration via Supabase CLI or Studio.
+- RLS and roles are configured; super admin is `devesh.pillewan@amla.io`.
 
-Widgets are defined in `widget_config.json` and include:
-- KPI, Bar, Donut, Table, Progress, Text
-- Heatmap, Timeline, Map, Bullet Chart, Sparkline, Gauge
-- Filter Panel, User Avatar, Notification
+## Icons
+- Place SVGs in `assets/icons/` and run `pnpm icons:import`.
 
-## 🎨 Icon Integration
-
-Icons for widgets are mapped in `supabase_icon_config.json` and sourced from free libraries like Icons8, Flaticon, Freepik, Iconoir.
-
-## 🧱 Supabase Setup
-
-Run the SQL schema in `supabase/sql/01_schema.sql` in Supabase Studio.
-
-Then use `supabase_sync_script.py` to populate the `widget_icons` table:
-```bash
-python supabase_sync_script.py
+## CI
+- See `.github/workflows/ci.yml`. Set repo secrets `SUPABASE_PROJECT_REF`, `SUPABASE_DB_PASSWORD`, keys as needed.

@@ -1,38 +1,35 @@
 {
   "name": "zentra-dashboard",
-  "version": "0.2.0",
   "private": true,
+  "version": "0.1.0",
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start -p 3000",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "icons:import": "tsx tools/import-icons.ts"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.5.0",
-    "@supabase/supabase-js": "^2.45.4",
-    "@xyflow/react": "^12.8.4",
+    "@supabase/ssr": "^0.4.0",
+    "@supabase/supabase-js": "^2.47.8",
+    "autoprefixer": "^10.4.20",
     "clsx": "^2.1.1",
-    "echarts-for-react": "^3.0.2",
-    "lucide-react": "^0.460.0",
-    "next": "^15.5.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-grid-layout": "^1.5.2",
-    "recharts": "^2.12.7",
-    "tailwind-merge": "^2.5.2",
-    "zod": "^3.23.8",
-    "zustand": "^4.3.8"
+    "next": "14.2.7",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tailwindcss": "^3.4.13",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^20.14.10",
-    "@types/react": "^18.3.8",
+    "@types/node": "^20.14.12",
+    "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "autoprefixer": "^10.4.20",
-    "eslint": "^9.9.0",
-    "eslint-config-next": "^15.5.2",
-    "postcss": "^8.4.41",
-    "tailwindcss": "^3.4.10",
-    "typescript": "^5.6.2"
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.7",
+    "postcss": "^8.4.47",
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.1",
+    "typescript": "^5.5.4"
   }
 }

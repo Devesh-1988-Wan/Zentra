@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  --amla-primary-50:#EEF8F2; --amla-primary-100:#D7F0E1; --amla-primary-200:#AFE1C3; --amla-primary-300:#7FCFA1; --amla-primary-400:#52BE83; --amla-primary-500:#2EAC69; --amla-primary-600:#1F8D55; --amla-primary-700:#186E44; --amla-primary-800:#125235; --amla-primary-900:#0D3B27;
+  --amla-accent-500:#FFA33E;
+  --amla-neutral-900:#1C2128;
+  --amla-radius-md:10px;
+  --amla-shadow-md:0 4px 10px rgba(16,24,40,.08);
+}
+
+html,body{height:100%;}
+body{color:#0f172a;background:#fff;}
+.container{max-width:1200px;margin-inline:auto;padding:24px;}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:var(--amla-radius-md);box-shadow:var(--amla-shadow-md);}
