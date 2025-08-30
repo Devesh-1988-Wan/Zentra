@@ -1,39 +1,48 @@
-
-name: "CodeQL"
+name: CI
 
 on:
   push:
-    branches: ["main"]
+    branches: [ main ]
   pull_request:
-    branches: ["main"]
-  schedule:
-    - cron: '0 0 * * 0'
+    branches: [ main ]
+
+permissions:
+  contents: read
 
 jobs:
-  analyze:
-    name: Analyze
+  build-test:
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: ["javascript", "typescript"]
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: ${{ matrix.language }}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+      - name: Setup pnpm
+        run: npm i -g pnpm@9
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      - name: Install
+        run: pnpm i --frozen-lockfile
+
+      # Optional: create .env for build-time envs from repo secrets
+      - name: Prepare env
+        run: |
+          touch .env.local
+          echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" >> .env.local
+          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" >> .env.local
+
+      - name: Lint
+        run: pnpm dlx eslint . --max-warnings=0
+
+      - name: Typecheck
+        run: pnpm tsconfig-paths -v || true && pnpm tsc -noEmit
+
+      - name: Build
+        run: pnpm build
+
+      - name: Unit tests
+        run: pnpm test -- --ci --reporter=list
