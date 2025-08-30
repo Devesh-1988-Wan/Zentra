@@ -1,0 +1,62 @@
+[
+  {
+    "type": "KPI",
+    "description": "Key performance indicator widget"
+  },
+  {
+    "type": "Bar",
+    "description": "Bar chart for categorical data"
+  },
+  {
+    "type": "Donut",
+    "description": "Donut chart for proportions"
+  },
+  {
+    "type": "Table",
+    "description": "Tabular data display"
+  },
+  {
+    "type": "Progress",
+    "description": "Progress bar for goals"
+  },
+  {
+    "type": "Text",
+    "description": "Static or dynamic text block"
+  },
+  {
+    "type": "Heatmap",
+    "description": "Heatmap for intensity visualization"
+  },
+  {
+    "type": "Timeline",
+    "description": "Timeline for project or events"
+  },
+  {
+    "type": "Map",
+    "description": "Geographic data visualization"
+  },
+  {
+    "type": "Bullet",
+    "description": "Bullet chart for performance vs target"
+  },
+  {
+    "type": "Sparkline",
+    "description": "Mini trend line chart"
+  },
+  {
+    "type": "Gauge",
+    "description": "Radial gauge for thresholds"
+  },
+  {
+    "type": "FilterPanel",
+    "description": "Interactive filter controls"
+  },
+  {
+    "type": "UserAvatar",
+    "description": "User profile display"
+  },
+  {
+    "type": "Notification",
+    "description": "Alert or message widget"
+  }
+]

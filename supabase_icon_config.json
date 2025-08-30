@@ -1,0 +1,77 @@
+[
+  {
+    "widget": "KPI",
+    "icon_name": "kpi.svg",
+    "source": "https://icons8.com/icons/set/dashboard-widgets"
+  },
+  {
+    "widget": "Bar",
+    "icon_name": "bar-chart.svg",
+    "source": "https://www.flaticon.com/free-icons/dashboard"
+  },
+  {
+    "widget": "Donut",
+    "icon_name": "donut-chart.svg",
+    "source": "https://www.freepik.com/icons/dashboard"
+  },
+  {
+    "widget": "Table",
+    "icon_name": "table.svg",
+    "source": "https://dashboardicons.com/"
+  },
+  {
+    "widget": "Progress",
+    "icon_name": "progress.svg",
+    "source": "https://iconoir.com/"
+  },
+  {
+    "widget": "Text",
+    "icon_name": "text.svg",
+    "source": "https://icons8.com/icons/set/dashboard-widgets"
+  },
+  {
+    "widget": "Heatmap",
+    "icon_name": "heatmap.svg",
+    "source": "https://www.flaticon.com/free-icons/dashboard"
+  },
+  {
+    "widget": "Timeline",
+    "icon_name": "timeline.svg",
+    "source": "https://www.freepik.com/icons/dashboard"
+  },
+  {
+    "widget": "Map",
+    "icon_name": "map.svg",
+    "source": "https://dashboardicons.com/"
+  },
+  {
+    "widget": "Bullet Chart",
+    "icon_name": "bullet-chart.svg",
+    "source": "https://iconoir.com/"
+  },
+  {
+    "widget": "Sparkline",
+    "icon_name": "sparkline.svg",
+    "source": "https://icons8.com/icons/set/dashboard-widgets"
+  },
+  {
+    "widget": "Gauge",
+    "icon_name": "gauge.svg",
+    "source": "https://www.flaticon.com/free-icons/dashboard"
+  },
+  {
+    "widget": "Filter Panel",
+    "icon_name": "filter.svg",
+    "source": "https://www.freepik.com/icons/dashboard"
+  },
+  {
+    "widget": "User Avatar",
+    "icon_name": "avatar.svg",
+    "source": "https://dashboardicons.com/"
+  },
+  {
+    "widget": "Notification",
+    "icon_name": "notification.svg",
+    "source": "https://iconoir.com/"
+  }
+]

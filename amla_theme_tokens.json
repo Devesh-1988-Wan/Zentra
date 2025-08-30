@@ -1,0 +1,25 @@
+{
+  "colors": {
+    "primary": {
+      "green": "#6bc04b",
+      "blue": "#5a98d1",
+      "dark_blue": "#224094",
+      "grey": "#5b6770"
+    },
+    "secondary": {
+      "yellow": "#fde64e",
+      "gold": "#f0be48",
+      "light_grey": "#c4c4c4",
+      "dark_grey": "#2c3033",
+      "teal": "#4d86a0",
+      "cream": "#e9e187"
+    }
+  },
+  "typography": {
+    "headline": "Poppins",
+    "body": "Poppins",
+    "alternative": "Arial",
+    "headline_alt": "Roboto Light",
+    "body_alt": "Roboto"
+  }
+}
