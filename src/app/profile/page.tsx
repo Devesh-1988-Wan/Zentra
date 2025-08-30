@@ -1,10 +1,11 @@
-import { createServerClient } from '@/utils/supabase/server'
+
+import { createServerClient } from '@/lib/supabase/server'
 import ProfileForm from './profile-form'
 
 export default async function ProfilePage() {
   const supabase = createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return <div className="page-shell"><div className="page-shell-inner">Not authorized</div></div>
+  if (!user) return <div className="container"><div className="card" style={{marginTop:20}}>Not authorized</div></div>
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -13,9 +14,9 @@ export default async function ProfilePage() {
     .single()
 
   return (
-    <div className="page-shell">
-      <div className="page-shell-inner">
-        <h1>Your Profile</h1>
+    <div className="container">
+      <div className="card" style={{ marginTop: 20 }}>
+        <h1>Profile</h1>
         <ProfileForm initial={profile} />
       </div>
     </div>

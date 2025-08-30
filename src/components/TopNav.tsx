@@ -1,7 +1,8 @@
+
 'use client'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 
 export default function TopNav() {
   const supabase = createClient()
@@ -12,19 +13,16 @@ export default function TopNav() {
   }, [supabase])
 
   return (
-    <nav className="topnav">
-      <div>
-        <Link href="/">Zentra</Link>
-        <Link href="/(auth)/sign-in">Sign in</Link>
-        <Link href="/(auth)/sign-up">Sign up</Link>
+    <div className="topbar">
+      <div className="brand">AMLA Dashboard</div>
+      <nav>
+        <Link href="/">Dashboard</Link>
         <Link href="/profile">Profile</Link>
         <Link href="/admin/profile-management">Admin</Link>
-      </div>
-      <div>
-        {email ? (
-          <button onClick={() => supabase.auth.signOut().then(()=>location.href='/(auth)/sign-in')}>Sign out</button>
-        ) : null}
-      </div>
-    </nav>
+        {!email && <Link href="/(auth)/sign-in">Sign in</Link>}
+        {!email && <Link href="/(auth)/sign-up">Sign up</Link>}
+        {email && <button className="btn" onClick={() => supabase.auth.signOut().then(()=>location.href='/(auth)/sign-in')}>Sign out</button>}
+      </nav>
+    </div>
   )
 }

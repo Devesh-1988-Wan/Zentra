@@ -1,7 +1,8 @@
+
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 
 export default function AdminProfileForm({ initial }: { initial: any }) {
   const supabase = createClient()
@@ -22,17 +23,17 @@ export default function AdminProfileForm({ initial }: { initial: any }) {
   }
 
   return (
-    <form onSubmit={onSave} className="stack">
+    <form onSubmit={onSave} style={{ display:'grid', gap: 12 }}>
       <label>Email</label>
-      <input value={initial.email} disabled />
+      <input className="input" value={initial.email} disabled />
       <label>Display name</label>
-      <input value={displayName} onChange={e => setDisplayName(e.target.value)} />
+      <input className="input" value={displayName} onChange={e => setDisplayName(e.target.value)} />
       <label>Role</label>
-      <select value={role} onChange={e => setRole(e.target.value)}>
+      <select className="input" value={role} onChange={e => setRole(e.target.value)}>
         <option value="user">user</option>
         <option value="super_admin">super_admin</option>
       </select>
-      <button type="submit">Save</button>
+      <button className="btn" type="submit">Save</button>
       {status && <p className="muted">{status}</p>}
     </form>
   )

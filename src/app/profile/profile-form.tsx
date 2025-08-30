@@ -1,6 +1,7 @@
+
 'use client'
 import { useState } from 'react'
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 
 export default function ProfileForm({ initial }: { initial: any }) {
   const supabase = createClient()
@@ -20,12 +21,12 @@ export default function ProfileForm({ initial }: { initial: any }) {
   }
 
   return (
-    <form onSubmit={onSave} className="stack">
+    <form onSubmit={onSave} style={{ display:'grid', gap: 12 }}>
       <label>Display name</label>
-      <input value={displayName} onChange={e => setDisplayName(e.target.value)} />
+      <input className="input" value={displayName} onChange={e => setDisplayName(e.target.value)} />
       <label>Avatar URL</label>
-      <input value={avatarUrl} onChange={e => setAvatarUrl(e.target.value)} />
-      <button type="submit">Save</button>
+      <input className="input" value={avatarUrl} onChange={e => setAvatarUrl(e.target.value)} />
+      <button className="btn" type="submit">Save</button>
       {status && <p className="muted">{status}</p>}
     </form>
   )
