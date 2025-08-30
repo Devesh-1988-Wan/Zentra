@@ -14,3 +14,11 @@ a {
   color: #224094;
   text-decoration: none;
 }
+
+:root {
+  --amla-primary-500: #2EAC69;
+  --amla-accent-500: #FFA33E;
+  --amla-neutral-900: #1C2128;
+  --amla-radius-md: 10px;
+  --amla-shadow-md: 0 4px 10px rgba(16,24,40,.08);
+}
