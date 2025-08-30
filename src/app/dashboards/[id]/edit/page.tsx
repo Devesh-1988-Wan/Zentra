@@ -14,21 +14,35 @@ export default function DashboardEditor({ params }: { params: { id: string } }) 
 
   useEffect(() => {
     const fetchDashboard = async () => {
-      const { data } = await supabase
-        .from('dashboards')
-        .select('*')
-        .eq('id', params.id)
-        .single();
-      if (data) {
-        setWidgets(data.widgets);
-        setLayout(data.layout);
+      try {
+        const { data, error } = await supabase
+          .from('dashboards')
+          .select('*')
+          .eq('id', params.id)
+          .single();
+        if (error) throw error;
+        if (data) {
+          setWidgets(data.widgets || []);
+          setLayout(data.layout || []);
+        }
+      } catch (error) {
+        console.error('Error fetching dashboard:', error);
       }
     };
     fetchDashboard();
   }, [params.id]);
 
-  const onLayoutChange = (newLayout) => {
-    // Save new layout to Supabase
+  const onLayoutChange = async (newLayout) => {
+    try {
+      const { error } = await supabase
+        .from('dashboards')
+        .update({ layout: newLayout })
+        .eq('id', params.id);
+      if (error) throw error;
+      setLayout(newLayout);
+    } catch (error) {
+      console.error('Error updating layout:', error);
+    }
   };
 
   return (

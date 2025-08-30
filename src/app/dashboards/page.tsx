@@ -1,11 +1,33 @@
 import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
 
+type Dashboard = {
+  id: string;
+  title: string;
+  description: string;
+  updated_at: string;
+};
+
 export default async function DashboardsPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return <div className="p-6">Please <Link href="/sign-in" className="underline">sign in</Link>.</div>
-  const { data: dashboards } = await supabase.from('dashboards').select('*').order('updated_at', { ascending: false })
+  if (!user) {
+    return (
+      <div className="p-6">
+        Please <Link href="/sign-in" className="underline">sign in</Link>.
+      </div>
+    );
+  }
+
+  const { data: dashboards, error } = await supabase
+    .from('dashboards')
+    .select('*')
+    .order('updated_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching dashboards:', error);
+    return <div className="p-6">Error fetching dashboards.</div>;
+  }
 
   return (
     <div className="p-6 space-y-4">
@@ -17,7 +39,7 @@ export default async function DashboardsPage() {
         </form>
       </div>
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {dashboards?.map((d:any)=> (
+        {dashboards?.map((d: Dashboard) => (
           <li key={d.id} className="border rounded p-4">
             <h3 className="font-medium">{d.title}</h3>
             <p className="text-sm opacity-70">{d.description}</p>
@@ -29,5 +51,5 @@ export default async function DashboardsPage() {
         ))}
       </ul>
     </div>
-  )
+  );
 }
