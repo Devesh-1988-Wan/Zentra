@@ -1,19 +1,17 @@
-import { type NextRequest } from 'next/server'
-import { updateSession } from '@/utils/supabase/middleware'
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse } from 'next/server';
 
-export async function middleware(request: NextRequest) {
-  return await updateSession(request)
+export async function middleware(req: Request) {
+  const res = NextResponse.next();
+  const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, { cookies: { get: () => null, set: () => {}, remove: () => {} }});
+  const { data: { session } } = await supabase.auth.getSession();
+  const url = new URL(req.url);
+  if (url.pathname.startsWith('/admin')) {
+    if (!session) return NextResponse.redirect(new URL('/login', url.origin));
+    const email = (session as any)?.user?.email;
+    if (email !== 'devesh.pillewan@amla.io') return NextResponse.redirect(new URL('/', url.origin));
+  }
+  return res;
 }
 
-export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
-     */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
-}
+export const config = { matcher: ['/admin/:path*'] };
