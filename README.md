@@ -1,71 +1,65 @@
 
-# Zentra Admin Fix (Variant Pack)
+# Supabase server client (fix for `createClient is not a function`)
 
-This pack includes **both** root-based and `src/`-based layouts so you can drop the correct file no matter how your project is structured.
+You are seeing this runtime error:
 
-## You are seeing:
 ```
-Module not found: Can't resolve '@/utils/auth/isSuperAdmin'
-```
-
-## Choose your layout
-
-### A) If you have **app/** at the repo root (and **no** `src/` wrapping it)
-- Use: `utils/auth/isSuperAdmin.ts`
-- (Optional) Example page: `app/admin/page.example.tsx`
-- Alias sample: `tsconfig.alias.root.sample.json`
-
-### B) If your project uses **src/** (e.g., `src/app`, `src/utils`)
-- Use: `src/utils/auth/isSuperAdmin.ts`
-- (Optional) Example page: `src/app/admin/page.example.tsx`
-- Alias sample: `tsconfig.alias.src.sample.json`
-
-> Ensure your `@` alias matches your layout. If you use `src/`, map `@/*` to `src/*`. If you don’t, map `@/*` to `./*`.
-
-## Steps
-1. **Copy the matching `isSuperAdmin.ts`** into your repo at the same path.
-2. **Confirm alias mapping** in your root `tsconfig.json`:
-
-- Root layout:
-```jsonc
-{
-  "compilerOptions": { "baseUrl": ".", "paths": { "@/*": ["./*"] } }
-}
-```
-- `src/` layout:
-```jsonc
-{
-  "compilerOptions": { "baseUrl": ".", "paths": { "@/*": ["src/*"] } }
-}
+TypeError: (0 , _utils_supabase_server__WEBPACK_IMPORTED_MODULE_2__.createClient) is not a function
 ```
 
-3. **Use in `app/admin/page.tsx`**:
-```tsx
-import { redirect } from 'next/navigation'
+That happens when your `utils/supabase/server` file does **not** export a named function called `createClient` but your code imports it like:
+
+```ts
 import { createClient } from '@/utils/supabase/server'
-import { isSuperAdmin } from '@/utils/auth/isSuperAdmin'
-
-export default async function AdminPage() {
-  const supabase = await createClient()
-  const ok = await isSuperAdmin(supabase)
-  if (!ok) redirect('/')
-  return <div>Admin</div>
-}
 ```
 
-4. **Optional**: set env allowlist in `.env.local`:
-```
-NEXT_PUBLIC_SUPER_ADMINS=devesh.pillewan@amla.io
+## What this pack provides
+- `utils/supabase/server.ts` that **exports a named** `createClient` consistent with your import.
+- An `app/admin/page.example.tsx` showing usage.
+
+## How to use
+1) Copy `utils/supabase/server.ts` into your repo *replacing* the existing file.
+2) Ensure you have the deps:
+
+```bash
+pnpm add @supabase/ssr @supabase/supabase-js
+# or: npm i @supabase/ssr @supabase/supabase-js
 ```
 
-5. **If build still fails**, clear cache and restart:
+3) Ensure you have env vars set (e.g., `.env.local`):
+```
+NEXT_PUBLIC_SUPABASE_URL=...your url...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...your anon key...
+```
+
+4) Restart dev server after replacing files:
 ```bash
 rm -rf .next
 pnpm dev   # or npm run dev / yarn dev
 ```
 
-## Notes
-- **Casing matters** on Linux/CI. Keep `utils/auth/isSuperAdmin.ts` exactly.
-- If you prefer, a webpack alias fallback sample is included: `next.config.alias.sample.js`.
-- Temporary unblock: change import to `../../utils/auth/isSuperAdmin` (from `app/admin`).
+## If you prefer a **default** export
+If your code imports it as default:
+
+```ts
+import createClient from '@/utils/supabase/server'
+```
+then change the export in `utils/supabase/server.ts` to:
+
+```ts
+export default function createClient() { /* same body */ }
+```
+
+…but keep **one** style consistently across your project.
+
+## Note about `await createClient()`
+`createClient()` returns a client synchronously; awaiting it is harmless (it returns immediately) but optional. You can write either:
+
+```ts
+const supabase = createClient()
+```
+or
+```ts
+const supabase = await createClient()
+```
 

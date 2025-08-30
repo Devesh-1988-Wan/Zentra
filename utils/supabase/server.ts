@@ -1,21 +1,32 @@
 
+// utils/supabase/server.ts
+// Next.js App Router server-side Supabase client (SSR cookie aware)
+// Uses @supabase/ssr (recommended). If you don't have it installed:
+//   pnpm add @supabase/ssr @supabase/supabase-js
+
 import { cookies } from 'next/headers'
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { createServerClient } from '@supabase/ssr'
 
 export function createClient() {
   const cookieStore = cookies()
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-  return createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        return cookieStore.getAll()
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name) {
+          return cookieStore.get(name)?.value
+        },
+        set(name, value, options) {
+          try { cookieStore.set({ name, value, ...options }) } catch {}
+        },
+        remove(name, options) {
+          try { cookieStore.set({ name, value: '', ...options, maxAge: 0 }) } catch {}
+        },
       },
-      // Note: Server Components cannot set cookies. This is OK because our middleware refreshes tokens.
-      setAll(_cookies: { name: string; value: string; options: CookieOptions }[]) {
-        // no-op on the server; handled in middleware
-      }
     }
-  })
+  )
+
+  return supabase
 }

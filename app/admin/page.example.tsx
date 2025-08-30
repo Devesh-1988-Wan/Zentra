@@ -6,8 +6,13 @@ import { isSuperAdmin } from '@/utils/auth/isSuperAdmin'
 
 export default async function AdminPage() {
   const supabase = await createClient()
+  const { data, error } = await supabase.auth.getUser()
+  if (error || !data?.user) redirect('/sign-in')
+
+  // Prefer email allowlist or roles
   const ok = await isSuperAdmin(supabase)
   if (!ok) redirect('/')
+
   return (
     <main className="p-6">
       <h1 className="text-2xl font-semibold">Admin</h1>
