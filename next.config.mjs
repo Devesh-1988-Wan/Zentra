@@ -1,1 +1,1 @@
-export default { reactStrictMode: true, experimental: { serverActions: { allowedOrigins: ['*'] } } };
+export default { reactStrictMode: true };

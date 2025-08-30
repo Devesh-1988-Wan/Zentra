@@ -1,26 +1,20 @@
-# Zentra — Leadership Dashboard (Starter)
+# Zentra Advanced Dashboard (Starter)
 
-This is a Next.js + Supabase starter aligned with AMLA theme and your RBAC/Widget requirements.
+A Next.js + Supabase-ready dashboard UI with a **broad widget catalog** inspired by Power BI, Tableau, and Qlik Sense. Charts use **Recharts** (SVG, React) and **Apache ECharts** (advanced visuals like Sankey, Sunburst, Heatmap, Gauge, Boxplot, Waterfall).
 
-## Stack
-- Next.js (App Router) + React + TypeScript
-- TailwindCSS
-- Supabase (Postgres + Auth + Storage)
+## Visual Catalog
+- Recharts: Line, Area, Bar, Stacked Bar, Combo (Bar+Line), Pie, Donut, Treemap, Scatter, Bubble, Radar, Radial Bar, Funnel.
+- ECharts: Sankey, Sunburst, Heatmap, Histogram, Boxplot, Waterfall, Gauge.
+- Tables & Filters: Table, Pivot (stub), Slicer, Date Range, Number Range, Markdown.
 
-## Quick Start
-1. `cp .env.example .env.local` and fill:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY` (only for icon import script)
-2. Install deps: `pnpm install` (or `npm i`)
-3. Run dev: `pnpm dev`
+## Run Locally
+```bash
+cp .env.example .env.local  # fill Supabase keys if using persistence later
+pnpm install
+pnpm dev
+```
+Open http://localhost:3000 and explore **Visual Gallery** and **/dashboard/demo**.
 
-## Database
-- Apply SQL migration via Supabase CLI or Studio.
-- RLS and roles are configured; super admin is `devesh.pillewan@amla.io`.
-
-## Icons
-- Place SVGs in `assets/icons/` and run `pnpm icons:import`.
-
-## CI
-- See `.github/workflows/ci.yml`. Set repo secrets `SUPABASE_PROJECT_REF`, `SUPABASE_DB_PASSWORD`, keys as needed.
+## Notes
+- Replace stub data with real data via Supabase or your APIs, then pass to widgets.
+- Add RLS/roles and migrations (see previous base zip) to persist widgets and layouts.
