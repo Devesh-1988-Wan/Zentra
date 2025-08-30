@@ -1,4 +1,3 @@
-
 // utils/auth/isSuperAdmin.ts
 import type { SupabaseClient } from '@supabase/supabase-js'
 
@@ -17,10 +16,6 @@ export async function isSuperAdmin(supabase: SupabaseClient): Promise<boolean> {
 
   const email = user.email?.toLowerCase()
   if (email && SUPER_ADMINS.includes(email)) return true
-
-  const roles: string[] =
-    (Array.isArray((user as any).app_metadata?.roles) && (user as any).app_metadata.roles) ||
-    ((user as any).user_metadata?.role ? [(user as any).user_metadata.role] : [])
-
-  return roles?.includes('super_admin') ?? false
+  
+  return false
 }

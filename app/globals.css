@@ -1,5 +1,0 @@
-@tailwind base; @tailwind components; @tailwind utilities;
-:root{ --amla-primary-500:#2EAC69; --amla-accent-500:#FFA33E; --amla-shadow-md:0 4px 10px rgba(16,24,40,.08); --amla-radius-md:10px; }
-body{ font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto; }
-.container{max-width:1200px;margin-inline:auto;padding:24px;}
-.card{background:#fff;border:1px solid #e5e7eb;border-radius:var(--amla-radius-md);box-shadow:var(--amla-shadow-md);}
