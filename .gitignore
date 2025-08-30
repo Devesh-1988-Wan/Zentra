@@ -27,3 +27,4 @@ yarn-error.log*
 # local env files
 .env.local
 .next/cache/webpack/client-development/4.pack.gz
+.next/cache/webpack/server-development/4.pack.gz
