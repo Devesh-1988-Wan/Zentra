@@ -1,12 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 import { readdirSync, readFileSync } from 'fs';
 import path from 'path';
-
 const dir = process.argv[2] ?? 'assets/icons';
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 const supabase = createClient(url, key);
-
 async function main(){
   const files = readdirSync(dir).filter(f=>f.endsWith('.svg'));
   for(const f of files){

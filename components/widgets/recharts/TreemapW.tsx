@@ -1,5 +1,5 @@
 'use client';
-import { Treemap, ResponsiveContainer, Tooltip } from 'recharts';
+import { Treemap, ResponsiveContainer } from 'recharts';
 const data = [
   { name: 'Category A', size: 400 },
   { name: 'Category B', size: 300 },
@@ -12,7 +12,6 @@ export default function TreemapW(){
       <ResponsiveContainer width="100%" height="100%">
         <Treemap data={data} dataKey="size" ratio={4/3} stroke="#fff" fill="#2EAC69"/>
       </ResponsiveContainer>
-      <div className="text-xs text-slate-500 mt-1">Treemap (Recharts)</div>
     </div>
   );
 }

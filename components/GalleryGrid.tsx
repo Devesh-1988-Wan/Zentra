@@ -1,6 +1,5 @@
 'use client';
-import { Registry } from './runtime/registry';
-
+import { Registry } from '@/components/runtime/registry';
 export default function GalleryGrid(){
   const kinds = Object.keys(Registry) as (keyof typeof Registry)[];
   return (

@@ -3,7 +3,7 @@ import { createServerClient } from '@supabase/ssr';
 
 export default async function Admin(){
   const cookieStore = cookies();
-  const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, { cookies: { get: (key:string)=>cookieStore.get(key)?.value, set: ()=>{}, remove: ()=>{} } });
+  const supabase = createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, { cookies: { get: (k:string)=>cookieStore.get(k)?.value, set: ()=>{}, remove: ()=>{} } });
   const { data: { session } } = await supabase.auth.getSession();
   const email = session?.user?.email;
   const isSuper = email === 'devesh.pillewan@amla.io';

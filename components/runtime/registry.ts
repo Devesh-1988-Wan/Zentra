@@ -1,6 +1,5 @@
 import dynamic from 'next/dynamic';
 import type { WidgetKind } from './types';
-
 export const Registry: Record<WidgetKind, { label: string; component: any }> = {
   kpi:        { label:'KPI', component: dynamic(()=>import('../widgets/KPI')) },
   'multi-kpi':{ label:'Multi KPI', component: dynamic(()=>import('../widgets/MultiKPI')) },

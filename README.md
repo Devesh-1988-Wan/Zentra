@@ -1,20 +1,20 @@
-# Zentra Advanced Dashboard (Starter)
+# Zentra — Complete (Widgets + Supabase)
 
-A Next.js + Supabase-ready dashboard UI with a **broad widget catalog** inspired by Power BI, Tableau, and Qlik Sense. Charts use **Recharts** (SVG, React) and **Apache ECharts** (advanced visuals like Sankey, Sunburst, Heatmap, Gauge, Boxplot, Waterfall).
+This project packages a BI-grade widget catalog and a Supabase backend starter.
 
-## Visual Catalog
-- Recharts: Line, Area, Bar, Stacked Bar, Combo (Bar+Line), Pie, Donut, Treemap, Scatter, Bubble, Radar, Radial Bar, Funnel.
-- ECharts: Sankey, Sunburst, Heatmap, Histogram, Boxplot, Waterfall, Gauge.
-- Tables & Filters: Table, Pivot (stub), Slicer, Date Range, Number Range, Markdown.
-
-## Run Locally
+## Run
 ```bash
-cp .env.example .env.local  # fill Supabase keys if using persistence later
+cp .env.example .env.local  # fill Supabase keys if using persistence
 pnpm install
 pnpm dev
 ```
-Open http://localhost:3000 and explore **Visual Gallery** and **/dashboard/demo**.
+- Open http://localhost:3000
+- Visual catalog: /gallery
+- Demo dashboard: /dashboard/demo
+- Admin (super admin only): /admin
 
-## Notes
-- Replace stub data with real data via Supabase or your APIs, then pass to widgets.
-- Add RLS/roles and migrations (see previous base zip) to persist widgets and layouts.
+## Path Aliases
+Uses `@/components/*` and `@/lib/*` via `tsconfig.json`. Restart dev server after changes.
+
+## Database
+Apply `supabase/migrations/2025-08-30_init_zentra.sql` in Supabase Studio or via CLI.

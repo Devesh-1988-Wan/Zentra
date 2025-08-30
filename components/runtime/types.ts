@@ -4,9 +4,4 @@ export type WidgetKind =
   | 'sunburst' | 'heatmap' | 'histogram' | 'boxplot' | 'waterfall' | 'gauge' | 'table'
   | 'pivot' | 'slicer' | 'date-range' | 'number-range' | 'markdown';
 
-export interface WidgetInstance {
-  id: string;
-  kind: WidgetKind;
-  title?: string;
-  config?: any;
-}
+export interface WidgetInstance { id: string; kind: WidgetKind; title?: string; config?: any; }
