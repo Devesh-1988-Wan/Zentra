@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import ReactECharts from 'echarts-for-react';
 import { createClient } from '@/utils/supabase/client';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-export default function DashboardEditor({ params }: { params: { id: string } }) {
+export default function DashboardEditor(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const [layout, setLayout] = useState([]);
   const [widgets, setWidgets] = useState([]);
   const supabase = createClient();

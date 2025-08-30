@@ -10,7 +10,8 @@ type Widget = {
   };
 };
 
-export default async function ViewDashboard({ params }: { params: { id: string } }) {
+export default async function ViewDashboard(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const supabase = await createClient()
   const { data: widgets, error } = await supabase
     .from('dashboard_widgets')

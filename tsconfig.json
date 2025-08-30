@@ -22,14 +22,23 @@
       "@/lib/*": [
         "app/lib/*"
       ]
-    }
+    },
+    "allowJs": true,
+    "skipLibCheck": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.mjs",
-    "**/*.cjs"
+    "**/*.cjs",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
