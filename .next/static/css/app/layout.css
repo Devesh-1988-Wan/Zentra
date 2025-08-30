@@ -1,5 +1,5 @@
 /*!*************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[12].use[3]!./app/globals.css ***!
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[10].use[3]!./app/globals.css ***!
   \*************************************************************************************************************************************************************************************************************************************************************/
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
@@ -528,21 +528,28 @@ video {
   .container {
     max-width: 1536px;
   }
+} .collapse {
+  visibility: collapse;
 } .col-span-3 {
   grid-column: span 3 / span 3;
 } .mx-auto {
   margin-left: auto;
   margin-right: auto;
+} .my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 } .mb-2 {
   margin-bottom: 0.5rem;
 } .mb-4 {
   margin-bottom: 1rem;
-} .mr-4 {
-  margin-right: 1rem;
+} .mt-1 {
+  margin-top: 0.25rem;
 } .mt-3 {
   margin-top: 0.75rem;
 } .mt-4 {
   margin-top: 1rem;
+} .block {
+  display: block;
 } .flex {
   display: flex;
 } .table {
@@ -595,6 +602,10 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+} .space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 } .space-y-4 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
@@ -617,11 +628,11 @@ video {
   border-top-width: 1px;
 } .bg-\[hsl\(var\(--brand\)\)\] {
   background-color: hsl(var(--brand));
+} .bg-primary-500 {
+  background-color: var(--amla-primary-500);
 } .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-} .p-2 {
-  padding: 0.5rem;
 } .p-3 {
   padding: 0.75rem;
 } .p-4 {
@@ -634,12 +645,12 @@ video {
 } .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
-} .px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
 } .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+} .py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 } .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -653,6 +664,8 @@ video {
   padding-left: 1.5rem;
 } .text-left {
   text-align: left;
+} .text-center {
+  text-align: center;
 } .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -672,9 +685,6 @@ video {
   font-weight: 500;
 } .font-semibold {
   font-weight: 600;
-} .text-green-600 {
-  --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity, 1));
 } .text-green-700 {
   --tw-text-opacity: 1;
   color: rgb(21 128 61 / var(--tw-text-opacity, 1));
@@ -713,6 +723,9 @@ body{ font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto; }
 }
 .hover\:underline:hover {
   text-decoration-line: underline;
+}
+.disabled\:opacity-60:disabled {
+  opacity: 0.6;
 }
 @media (min-width: 768px) {
 
