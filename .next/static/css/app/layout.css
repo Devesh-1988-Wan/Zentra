@@ -568,8 +568,6 @@ video {
   width: 100%;
 } .max-w-md {
   max-width: 28rem;
-} .list-disc {
-  list-style-type: disc;
 } .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 } .grid-cols-12 {
@@ -660,8 +658,6 @@ video {
 } .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-} .pl-6 {
-  padding-left: 1.5rem;
 } .text-left {
   text-align: left;
 } .text-center {
