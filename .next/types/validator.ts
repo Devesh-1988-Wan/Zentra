@@ -65,6 +65,12 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   handler satisfies AppPageConfig<"/sign-up">
 }
 
+// Validate ../src/app/api/data-sources/page.tsx
+{
+  const handler = {} as typeof import("../src/app/api/data-sources/page.js")
+  handler satisfies AppPageConfig<"/api/data-sources">
+}
+
 // Validate ../src/app/dashboards/[id]/edit/page.tsx
 {
   const handler = {} as typeof import("../src/app/dashboards/[id]/edit/page.js")
@@ -87,6 +93,18 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   const handler = {} as typeof import("../src/app/api/create-dashboard/route.js")
   handler satisfies RouteHandlerConfig<"/api/create-dashboard">
+}
+
+// Validate ../src/app/api/data-models/route.ts
+{
+  const handler = {} as typeof import("../src/app/api/data-models/route.js")
+  handler satisfies RouteHandlerConfig<"/api/data-models">
+}
+
+// Validate ../src/app/api/data-sources/route.ts
+{
+  const handler = {} as typeof import("../src/app/api/data-sources/route.js")
+  handler satisfies RouteHandlerConfig<"/api/data-sources">
 }
 
 // Validate ../src/app/auth/confirm/route.ts
