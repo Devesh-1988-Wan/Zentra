@@ -3,26 +3,22 @@ import { NextResponse } from 'next/server';
 
 export async function middleware(req: Request) {
   const res = NextResponse.next();
-
-  // ✅ Use the NEXT_PUBLIC_* pair consistently
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-  // Optional safety: avoid hard crash if env not present
   if (!url || !anon) {
     if (process.env.NODE_ENV !== 'production') {
-      console.warn('[supabase] Missing URL or ANON KEY in env; skipping auth check in middleware');
+      console.warn('[supabase] Missing env in middleware; skipping auth check');
     }
-    return res; // don't block the app during local setup
+    return res;
   }
 
   const supabase = createServerClient(url, anon, {
     cookies: { get: () => null, set: () => {}, remove: () => {} },
   });
 
-  const { data: { session } } = await supabase.auth.getSession(); // note: see doc caveat below
+  const { data: { session } } = await supabase.auth.getSession();
   const urlObj = new URL(req.url);
-
   if (urlObj.pathname.startsWith('/admin')) {
     if (!session) return NextResponse.redirect(new URL('/login', urlObj.origin));
   }
