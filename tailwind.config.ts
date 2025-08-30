@@ -1,17 +1,20 @@
-import type { Config } from 'tailwindcss'
-export default {
-  darkMode: ['class'],
-  content: ['./src/**/*.{ts,tsx}'],
+import type { Config } from 'tailwindcss';
+
+export default <Partial<Config>>{
   theme: {
     extend: {
       colors: {
-        brand: {
-          DEFAULT: 'hsl(var(--brand))',
-          foreground: 'hsl(var(--brand-foreground))',
+        primary: {
+          50: 'var(--amla-primary-50)', 500: 'var(--amla-primary-500)'
         },
-        muted: 'hsl(var(--muted))',
+        accent: { 500: 'var(--amla-accent-500)' }
       },
-    },
-  },
-  plugins: [],
-} satisfies Config
+      boxShadow: {
+        md: 'var(--amla-shadow-md)'
+      },
+      borderRadius: {
+        md: 'var(--amla-radius-md)'
+      }
+    }
+  }
+}
