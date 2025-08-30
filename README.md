@@ -1,83 +1,71 @@
 
-# Zentra Admin Fix (Super Admin Guard)
+# Zentra Admin Fix (Variant Pack)
 
-This ZIP adds a reusable `isSuperAdmin` helper and an example Admin page implementation to resolve the build error:
+This pack includes **both** root-based and `src/`-based layouts so you can drop the correct file no matter how your project is structured.
 
+## You are seeing:
 ```
 Module not found: Can't resolve '@/utils/auth/isSuperAdmin'
 ```
 
-## What’s inside
+## Choose your layout
 
+### A) If you have **app/** at the repo root (and **no** `src/` wrapping it)
+- Use: `utils/auth/isSuperAdmin.ts`
+- (Optional) Example page: `app/admin/page.example.tsx`
+- Alias sample: `tsconfig.alias.root.sample.json`
+
+### B) If your project uses **src/** (e.g., `src/app`, `src/utils`)
+- Use: `src/utils/auth/isSuperAdmin.ts`
+- (Optional) Example page: `src/app/admin/page.example.tsx`
+- Alias sample: `tsconfig.alias.src.sample.json`
+
+> Ensure your `@` alias matches your layout. If you use `src/`, map `@/*` to `src/*`. If you don’t, map `@/*` to `./*`.
+
+## Steps
+1. **Copy the matching `isSuperAdmin.ts`** into your repo at the same path.
+2. **Confirm alias mapping** in your root `tsconfig.json`:
+
+- Root layout:
+```jsonc
+{
+  "compilerOptions": { "baseUrl": ".", "paths": { "@/*": ["./*"] } }
+}
 ```
-utils/
-  auth/
-    isSuperAdmin.ts          # New util
-app/
-  admin/
-    page.example.tsx        # Example usage (do not overwrite your page.tsx blindly)
-tsconfig.alias.sample.json  # Safe alias config sample (merge into your tsconfig.json)
-.env.example                # Env variable for admin allowlist
+- `src/` layout:
+```jsonc
+{
+  "compilerOptions": { "baseUrl": ".", "paths": { "@/*": ["src/*"] } }
+}
 ```
 
-## How to apply
+3. **Use in `app/admin/page.tsx`**:
+```tsx
+import { redirect } from 'next/navigation'
+import { createClient } from '@/utils/supabase/server'
+import { isSuperAdmin } from '@/utils/auth/isSuperAdmin'
 
-1. **Copy the util**
-   - Place `utils/auth/isSuperAdmin.ts` into your repo keeping the same path & casing.
+export default async function AdminPage() {
+  const supabase = await createClient()
+  const ok = await isSuperAdmin(supabase)
+  if (!ok) redirect('/')
+  return <div>Admin</div>
+}
+```
 
-2. **Alias check** (using `@/` imports)
-   - Open your root `tsconfig.json`. Ensure it contains:
+4. **Optional**: set env allowlist in `.env.local`:
+```
+NEXT_PUBLIC_SUPER_ADMINS=devesh.pillewan@amla.io
+```
 
-   ```jsonc
-   {
-     "compilerOptions": {
-       "baseUrl": ".",
-       "paths": {
-         "@/*": ["./*"]
-       }
-     }
-   }
-   ```
-
-   - If you don’t have a `tsconfig.json`, create one and paste the above. If you already have one, **merge** these options. (A `jsconfig.json` works similarly, but `tsconfig.json` takes precedence.)
-
-3. **Use the util in your Admin page**
-   - In `app/admin/page.tsx`:
-
-   ```tsx
-   import { redirect } from 'next/navigation'
-   import { createClient } from '@/utils/supabase/server'
-   import { isSuperAdmin } from '@/utils/auth/isSuperAdmin'
-
-   export default async function AdminPage() {
-     const supabase = await createClient()
-     const ok = await isSuperAdmin(supabase)
-     if (!ok) redirect('/')
-     return <div>Admin</div>
-   }
-   ```
-
-4. **Optional: configure super admins in env**
-   - Add to `.env.local` (create if missing):
-
-   ```
-   NEXT_PUBLIC_SUPER_ADMINS=devesh.pillewan@amla.io
-   ```
-
-   - Comma‑separate multiple emails.
-
-5. **Clear cache & restart** (only needed if build still complains)
-
-   ```bash
-   rm -rf .next
-   pnpm dev   # or npm run dev / yarn dev
-   ```
+5. **If build still fails**, clear cache and restart:
+```bash
+rm -rf .next
+pnpm dev   # or npm run dev / yarn dev
+```
 
 ## Notes
-- Keep the folder names’ **casing** exact (`utils/auth/isSuperAdmin.ts`). Linux builds are case‑sensitive.
-- If you prefer **relative imports**, change your import to `../../utils/auth/isSuperAdmin` from `app/admin/page.tsx` and you can skip the alias step.
-
-## Troubleshooting
-- If you just added `tsconfig.json`, restart the dev server so Next.js picks up the alias changes.
-- If you also use Jest or tooling, mirror the alias there as needed.
+- **Casing matters** on Linux/CI. Keep `utils/auth/isSuperAdmin.ts` exactly.
+- If you prefer, a webpack alias fallback sample is included: `next.config.alias.sample.js`.
+- Temporary unblock: change import to `../../utils/auth/isSuperAdmin` (from `app/admin`).
 
