@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { createClient } from '@/lib/supabase/client';
 
 export type Dashboard = {
   id: string;
@@ -15,6 +15,7 @@ export default function DashboardList({ orgId }: { orgId?: string }) {
   const [rows, setRows] = useState<Dashboard[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const supabase = createClient();
 
   useEffect(() => {
     let cancelled = false;
@@ -57,7 +58,7 @@ export default function DashboardList({ orgId }: { orgId?: string }) {
     return () => {
       cancelled = true;
     };
-  }, [orgId]);
+  }, [orgId, supabase]);
 
   if (loading) return <div>Loading dashboards…</div>;
   if (error) return <div className="text-red-600">Error fetching dashboards: {error}</div>;
