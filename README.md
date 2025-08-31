@@ -1,42 +1,42 @@
-# Zentra (Leadership Dashboard Starter)
 
-> Production-ready starter with AMLA theme tokens, exec-ready cards/charts, Supabase RLS, and Vercel CI/CD.
+# Zentra – Minimal Patch to fix `Can't resolve '@/lib/supabase/client'`
 
-## Quick Start
-```bash
-npm i
-cp .env.example .env.local
-# add Supabase envs
-npm run dev
+This patch adds the missing Supabase client utilities and (optionally) the path alias.
+
+## What’s included
+
+- `lib/supabase/client.ts` — Browser client for use in Client Components (`'use client'`).
+- `lib/supabase/server.ts` — Server client for Server Components/Actions (optional to use now).
+- `tsconfig.add.json` — A small snippet to merge into your `tsconfig.json` if `@/*` alias isn't set.
+
+## How to apply
+
+1. **Unzip at your project root** (same folder that contains `package.json`). This will create the `lib/supabase/` folder.
+2. **If you still see the module-not-found error**, open your `tsconfig.json` and merge the snippet from `tsconfig.add.json` under `compilerOptions`:
+
+```jsonc
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["*"]
+    }
+  }
+}
 ```
 
-## Build & Run
-```bash
-npm run build && npm start
+> If your code lives in `src/`, change it to: `"@/*": ["src/*"]`.
+
+3. **Add env vars** in `.env.local` (create if it doesn't exist):
+
+```ini
+NEXT_PUBLIC_SUPABASE_URL=your_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 ```
 
-## Environment
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE` (server only)
+4. Restart the dev server: `npm run dev`.
 
-## Supabase
-Apply `supabase/schema.sql` then `supabase/policies.sql` in the SQL editor. Set your user row in `profiles` to `super_admin` for elevated rights.
+## Notes
+- Keep your existing `import { createClient } from '@/lib/supabase/client'` usage.
+- The setup follows Supabase’s Next.js guide for separate browser/server clients.
 
-## CI/CD (Vercel)
-Workflows provided under `.github/workflows`. Add GitHub repo secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
-
-## Theming
-AMLA tokens live in `styles/tokens.css`. Tailwind consumes these via custom color names (e.g., `bg-surface`, `text-muted`).
-
-## Presentation Mode
-Open `/present` for full-screen leadership walkthrough with PDF export.
-
-```
-References:
-- Next.js production build & deploy: https://nextjs.org/docs/13/app/building-your-application/deploying
-- Vercel GitHub Actions (prebuilt deploy): https://vercel.com/guides/how-can-i-use-github-actions-with-vercel
-- Supabase GitHub OAuth: https://supabase.com/docs/guides/auth/social-login/auth-github
-- Supabase RLS: https://supabase.com/docs/guides/database/postgres/row-level-security
-- Recharts docs: https://recharts.org/
-```
