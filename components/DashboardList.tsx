@@ -7,9 +7,9 @@ import { supabase } from '../lib/supabase';
 export type Dashboard = {
   id: string;
   title: string;
-  config: any;
   org_id: string | null;
   updated_at: string;
+  config?: any; // optional; populate when DB has this column
 };
 
 export default function DashboardList({ orgId }: { orgId?: string }) {
@@ -27,7 +27,7 @@ export default function DashboardList({ orgId }: { orgId?: string }) {
       try {
         let query = supabase
           .from('dashboards')
-          .select('id, title, config, org_id, updated_at')
+          .select('id, title, org_id, updated_at')
           .order('updated_at', { ascending: false });
 
         if (orgId) query = query.eq('org_id', orgId);
