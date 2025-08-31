@@ -8,8 +8,9 @@ export async function POST(req: Request) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.redirect(new URL('/sign-in', req.url))
 
-  // When inserting, set is_private to false to make the new dashboard visible
-  const { data, error } = await supabase.from('dashboards').insert({ title, is_private: false }).select('id').single()
+  // This line is the one to check
+  const { data, error } = await supabase.from('dashboards').insert({ title, owner_id: user.id, is_private: false }).select('id').single()
+  
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
   return NextResponse.redirect(new URL(`/dashboards/${data.id}/edit`, req.url))
 }
