@@ -1,23 +1,42 @@
+# Zentra (Leadership Dashboard Starter)
 
-# Zentra – Code-only fix (remove `config` from query)
+> Production-ready starter with AMLA theme tokens, exec-ready cards/charts, Supabase RLS, and Vercel CI/CD.
 
-This patch addresses the runtime error:
-
-    Error fetching dashboards: column dashboards.config does not exist
-
-by removing `config` from the client `select(...)` and making the `config` field optional in the type. Use this if you cannot (or do not want to) add the `config` column in the database right now.
-
-If/when you add a `config` JSONB column on `public.dashboards`, you can revert to selecting it again.
-
-## Files changed
-- `components/DashboardList.tsx` — `select('id, title, org_id, updated_at')`
-- `app/dashboards/page.tsx` — unchanged except relative import
-
-## Optional: Add `config` later
-Run this in Supabase SQL editor to add the column later:
-
-```sql
-alter table if exists public.dashboards
-  add column if not exists config jsonb not null default '{}'::jsonb;
+## Quick Start
+```bash
+npm i
+cp .env.example .env.local
+# add Supabase envs
+npm run dev
 ```
 
+## Build & Run
+```bash
+npm run build && npm start
+```
+
+## Environment
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE` (server only)
+
+## Supabase
+Apply `supabase/schema.sql` then `supabase/policies.sql` in the SQL editor. Set your user row in `profiles` to `super_admin` for elevated rights.
+
+## CI/CD (Vercel)
+Workflows provided under `.github/workflows`. Add GitHub repo secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
+
+## Theming
+AMLA tokens live in `styles/tokens.css`. Tailwind consumes these via custom color names (e.g., `bg-surface`, `text-muted`).
+
+## Presentation Mode
+Open `/present` for full-screen leadership walkthrough with PDF export.
+
+```
+References:
+- Next.js production build & deploy: https://nextjs.org/docs/13/app/building-your-application/deploying
+- Vercel GitHub Actions (prebuilt deploy): https://vercel.com/guides/how-can-i-use-github-actions-with-vercel
+- Supabase GitHub OAuth: https://supabase.com/docs/guides/auth/social-login/auth-github
+- Supabase RLS: https://supabase.com/docs/guides/database/postgres/row-level-security
+- Recharts docs: https://recharts.org/
+```

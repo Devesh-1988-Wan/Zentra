@@ -1,15 +1,31 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: ['./app/**/*.{ts,tsx}','./components/**/*.{ts,tsx}','./src/**/*.{ts,tsx}'],
+module.exports = {
+  content: [
+    "./app/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}"
+  ],
   theme: {
     extend: {
       colors: {
-        primary: { 500: 'var(--amla-primary-500)' },
-        accent: { 500: 'var(--amla-accent-500)' },
+        bg: "var(--amla-bg)",
+        surface: "var(--amla-surface)",
+        text: "var(--amla-text)",
+        muted: "var(--amla-muted)",
+        brand: "var(--amla-brand)",
+        accent: "var(--amla-accent)",
+        danger: "var(--amla-danger)",
+        warning: "var(--amla-warning)",
+        success: "var(--amla-success)",
+        border: "var(--amla-border)",
       },
-      boxShadow: { md: 'var(--amla-shadow-md)' },
-      borderRadius: { md: 'var(--amla-radius-md)' }
-    }
+      boxShadow: {
+        sm: "var(--amla-shadow-sm)",
+        md: "var(--amla-shadow-md)",
+      },
+      fontFamily: {
+        sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "Roboto", "Arial", "sans-serif"],
+      }
+    },
   },
-  plugins: []
+  plugins: [],
 }

@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+
+html, body { height: 100%; }
+body { background: var(--amla-bg); color: var(--amla-text); }
+
+/* Utility */
+.card { @apply rounded-xl bg-surface p-4 shadow-md; }
