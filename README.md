@@ -1,44 +1,38 @@
 
-# Zentra 404 Fix Pack
+# Import Fix (no path aliases)
 
-This pack resolves the `GET / 404` you see in the Next.js dev server by ensuring your app has a root route.
+This patch removes `@/` path aliases from two files so your project compiles even if `tsconfig.json/jsconfig.json` doesn't define aliases.
 
-## What's included
+**Updated files**
+- `app/dashboards/page.tsx` → uses `../../components/DashboardList`
+- `components/DashboardList.tsx` → uses `../lib/supabase`
 
-- `app/page.tsx` — App Router root that redirects `/` to `/dashboards`.
-- `public/.well-known/appspecific/com.chrome.devtools.json` — Optional stub to stop repeated Chrome DevTools 404s.
-- `next.config.js` — A redirect from `/` to `/dashboards` (works regardless of router). If you already have redirects, merge accordingly.
+Apply these if you prefer not to add a path alias right now.
 
-## How to apply
+**Alternative (keep `@/` imports):**
+Add this to your `tsconfig.json` (or `jsconfig.json` for JS):
 
-1. Copy these files into your project root (merge `app/`, `public/`).
-2. If you already have `next.config.js`, merge the `redirects()` array instead of overwriting.
-3. Restart the dev server:
-
-```bash
-npm run dev
-# or
-pnpm dev
-# or
-yarn dev
+```jsonc
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
+}
 ```
 
-## Why you saw the 404
-- In Next.js, `/` maps to `app/page.tsx` (App Router) or `pages/index.tsx` (Pages Router). If neither exists, the framework serves the built-in **Not Found** route.
-- You already have `app/dashboards/page.tsx`, so visiting `/dashboards` works; `/` had no page, hence the 404.
-- The `/.well-known/appspecific/com.chrome.devtools.json` 404s are harmless; Chrome probes for this file. Adding a small JSON file silences the noise.
+If your code lives under `src/`, use:
 
-## Alternative (Pages Router)
-If you are on Pages Router instead, create `pages/index.tsx`:
-
-```tsx
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-
-export default function Home() {
-  const router = useRouter();
-  useEffect(() => { router.replace('/dashboards'); }, [router]);
-  return null;
+```jsonc
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
 }
 ```
 
