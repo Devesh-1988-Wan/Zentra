@@ -1,9 +1,13 @@
-
+import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
 
+/**
+ * Refreshes Supabase auth session on every request that matches the middleware config.
+ * Follows Supabase's Next.js server-side auth guidance.
+ */
 export async function updateSession(request: NextRequest) {
-  let response = NextResponse.next({ request })
+  // Prepare a response we can mutate if cookies change
+  let response = NextResponse.next({ request: { headers: request.headers } })
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -14,15 +18,17 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            response.cookies.set(name, value, options as CookieOptions)
-          })
+          // reflect new cookies on the request (so downstream server components see them)
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          response = NextResponse.next({ request })
+          // also write cookies on the response back to the browser
+          cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options))
         }
       }
     }
   )
 
-  // This will refresh the session if expired - do not trust getSession here
+  // This call will refresh the session if needed and set cookies via the adapter above
   await supabase.auth.getUser()
 
   return response
