@@ -1,33 +1,34 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
 export type Dashboard = {
   id: string;
   title: string;
-  org_id: string | null;
+  org_id?: string | null; // optional to match query
   updated_at: string;
-  config?: any; // optional; populate when DB has this column
+  config?: any;
 };
 
 export default function DashboardList({ orgId }: { orgId?: string }) {
   const [rows, setRows] = useState<Dashboard[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const supabase = createClient();
+
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
     let cancelled = false;
 
-    async function run() {
+    async function fetchDashboards() {
       setLoading(true);
       setError(null);
 
       try {
         let query = supabase
           .from('dashboards')
-          .select('id, title, updated_at') // "org_id" has been removed from this line.
+          .select('id, title, updated_at, org_id') // include org_id for consistency
           .order('updated_at', { ascending: false });
 
         if (orgId) query = query.eq('org_id', orgId);
@@ -35,17 +36,12 @@ export default function DashboardList({ orgId }: { orgId?: string }) {
         const { data, error } = await query;
 
         if (error) {
-          console.error('[Dashboards fetch error]', {
-            message: error.message,
-            code: (error as any).code,
-            details: (error as any).details,
-            hint: (error as any).hint,
-          });
-          if (!cancelled) setError(error.message);
+          console.error('[Dashboards fetch error]', error);
+          if (!cancelled) setError(error.message || 'Unknown error');
           return;
         }
 
-        if (!cancelled) setRows(data || []);
+        if (!cancelled) setRows(data ?? []);
       } catch (e: any) {
         console.error('[Dashboards fetch exception]', e);
         if (!cancelled) setError(e?.message || 'Unknown error');
@@ -54,14 +50,12 @@ export default function DashboardList({ orgId }: { orgId?: string }) {
       }
     }
 
-    run();
-    return () => {
-      cancelled = true;
-    };
+    fetchDashboards();
+    return () => { cancelled = true; };
   }, [orgId, supabase]);
 
   if (loading) return <div>Loading dashboards…</div>;
-  if (error) return <div className="text-red-600">Error fetching dashboards: {error}</div>;
+  if (error) return <div className="text-red-600">Error: {error}</div>;
   if (!rows.length) return <div>No dashboards yet.</div>;
 
   return (
