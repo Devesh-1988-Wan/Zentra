@@ -3,7 +3,7 @@ export const metadata = {
   description: 'Leadership dashboard',
 }
 
-import './globals.css'
+import '../styles/globals.css'
 import '../styles/tokens.css'
 import { ReactNode } from 'react'
 
