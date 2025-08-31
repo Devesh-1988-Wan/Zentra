@@ -1,8 +1,7 @@
-
 'use client'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { createClient } from '@/utils/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 import { isSuperAdmin } from '@/utils/auth/isSuperAdmin'
 
 export default function AdminLink() {
@@ -13,8 +12,7 @@ export default function AdminLink() {
       const flag = (process.env.NEXT_PUBLIC_SHOW_ADMIN_ON_AUTH || 'false').toLowerCase() === 'true'
       if (!flag) return setShow(false)
       const supabase = createClient()
-      const { data } = await supabase.auth.getUser()
-      const canSee = !!data?.user?.email && isSuperAdmin(data.user.email)
+      const canSee = await isSuperAdmin(supabase)
       setShow(canSee)
     }
     run()
