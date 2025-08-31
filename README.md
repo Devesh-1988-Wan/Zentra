@@ -1,78 +1,44 @@
 
-# Zentra Dashboards – Fetch Fix Pack
+# Zentra 404 Fix Pack
 
-This pack contains the **minimal, drop-in files** to resolve the generic “Error fetching dashboards” issue by ensuring:
+This pack resolves the `GET / 404` you see in the Next.js dev server by ensuring your app has a root route.
 
-1. Correct **Supabase client initialization** on the client.
-2. A robust **dashboards list component** with detailed error logging.
-3. Optional **SQL migration** to create `dashboards` table and **RLS policies** so authenticated users (or super admins) can read.
+## What's included
 
-> Works with Next.js App Router. If you use Pages Router, place the component and imports accordingly.
+- `app/page.tsx` — App Router root that redirects `/` to `/dashboards`.
+- `public/.well-known/appspecific/com.chrome.devtools.json` — Optional stub to stop repeated Chrome DevTools 404s.
+- `next.config.js` — A redirect from `/` to `/dashboards` (works regardless of router). If you already have redirects, merge accordingly.
 
----
+## How to apply
 
-## What’s inside
+1. Copy these files into your project root (merge `app/`, `public/`).
+2. If you already have `next.config.js`, merge the `redirects()` array instead of overwriting.
+3. Restart the dev server:
 
-```
-lib/
-  supabase.ts              # Browser client init (anon key)
-components/
-  DashboardList.tsx       # Client component that fetches dashboards safely
-app/
-  dashboards/
-    page.tsx              # Example page rendering the list
-sql/
-  2025-08-31_dashboards.sql
-.env.example               # Copy to .env.local and fill values
+```bash
+npm run dev
+# or
+pnpm dev
+# or
+yarn dev
 ```
 
----
+## Why you saw the 404
+- In Next.js, `/` maps to `app/page.tsx` (App Router) or `pages/index.tsx` (Pages Router). If neither exists, the framework serves the built-in **Not Found** route.
+- You already have `app/dashboards/page.tsx`, so visiting `/dashboards` works; `/` had no page, hence the 404.
+- The `/.well-known/appspecific/com.chrome.devtools.json` 404s are harmless; Chrome probes for this file. Adding a small JSON file silences the noise.
 
-## Quick start
+## Alternative (Pages Router)
+If you are on Pages Router instead, create `pages/index.tsx`:
 
-1. **Copy files** into your repo, preserving the folder structure.
-2. **Install dependency** (if not already):
+```tsx
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-   ```bash
-   npm i @supabase/supabase-js
-   # or
-   pnpm add @supabase/supabase-js
-   # or
-   yarn add @supabase/supabase-js
-   ```
-
-3. **Set environment variables** (create `.env.local` from `.env.example`):
-
-   ```ini
-   NEXT_PUBLIC_SUPABASE_URL=https://<PROJECT-REF>.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=<YOUR-ANON-KEY>
-   # (Optional for server routes only) SUPABASE_SERVICE_ROLE_KEY=<YOUR-SERVICE-ROLE>
-   ```
-
-4. **(Optional) Apply SQL migration** in Supabase SQL editor:
-
-   - Open **Supabase → SQL → New Query**
-   - Paste contents of `sql/2025-08-31_dashboards.sql`
-   - Run the script (you can run parts if the table already exists)
-
-5. **Run app**:
-
-   ```bash
-   npm run dev
-   ```
-
-6. Open **DevTools → Network** and verify calls to `/rest/v1/dashboards` succeed (200) and return rows.
-
----
-
-## Notes
-
-- The component logs the full Supabase error object to the console so we can diagnose `code`, `details`, and `hint` if any further issues occur.
-- If your app filters by `org_id`, pass it to `<DashboardList orgId={...} />`.
-- If you already have RLS policies, keep them; use the included SQL as a reference. Ensure your authenticated users satisfy the policy conditions.
-
-## References
-- Supabase JS client usage and auth: https://supabase.com/docs/reference/javascript/initializing
-- Row Level Security and Policies: https://supabase.com/docs/guides/database/postgres/row-level-security
-- Next.js + Supabase patterns: https://supabase.com/docs/guides/auth/auth-helpers/nextjs
+export default function Home() {
+  const router = useRouter();
+  useEffect(() => { router.replace('/dashboards'); }, [router]);
+  return null;
+}
+```
 
