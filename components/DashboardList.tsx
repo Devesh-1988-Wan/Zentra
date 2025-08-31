@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -27,7 +26,7 @@ export default function DashboardList({ orgId }: { orgId?: string }) {
       try {
         let query = supabase
           .from('dashboards')
-          .select('id, title, org_id, updated_at')
+          .select('id, title, updated_at') // "org_id" has been removed from this line.
           .order('updated_at', { ascending: false });
 
         if (orgId) query = query.eq('org_id', orgId);
